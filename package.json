@@ -1,0 +1,22 @@
+{
+  "name": "qbo-docs-scraper",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "generate": "node parseTypes.js",
+    "generate-via-puppeteer": "node index.js"
+  },
+  "prettier": {
+    "trailingComma": "es5",
+    "tabWidth": 2,
+    "semi": true,
+    "singleQuote": false
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "puppeteer": "^19.7.2"
+  }
+}
