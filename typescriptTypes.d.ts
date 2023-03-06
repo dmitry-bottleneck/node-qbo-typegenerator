@@ -536,7 +536,7 @@ export type TaxLineDetail = {
   TaxPercent?: number;
   TaxRateRef: ReferenceType;
 };
-export type TelephoneNumber30 = {
+export type TelephoneNumber = {
   FreeFormNumber?: string;
 };
 export type TxnTaxDetail = {

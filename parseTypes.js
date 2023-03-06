@@ -137,6 +137,8 @@ function stantardizeTypeName(name) {
     case "CurrencyRefType":
     case "CurrencyRef":
       return "CurrencyRef";
+    case "TelephoneNumber30":
+      return "TelephoneNumber";
     default:
       return name;
   }
