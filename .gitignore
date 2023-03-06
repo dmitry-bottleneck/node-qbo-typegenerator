@@ -43,3 +43,5 @@ prisma/inputFiles/*
 /logs
 
 /CSV
+
+.vscode
