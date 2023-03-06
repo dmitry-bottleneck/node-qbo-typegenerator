@@ -5,8 +5,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "generate": "node parseTypes.js",
-    "generate-via-puppeteer": "node puppeteer/index.js"
+    "generate": "node parseTypes.js && npm run prettier",
+    "generate-via-puppeteer": "node puppeteer/index.js",
+    "prettier": "./node_modules/.bin/prettier --write typescriptTypes.d.ts"
   },
   "prettier": {
     "trailingComma": "es5",
