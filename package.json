@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "generate": "node parseTypes.js",
-    "generate-via-puppeteer": "node index.js"
+    "generate-via-puppeteer": "node puppeteer/index.js"
   },
   "prettier": {
     "trailingComma": "es5",
