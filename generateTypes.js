@@ -43,6 +43,7 @@ const types = [
     key: "invoiceresponse",
     createType: true,
     updateType: true,
+    deleteType: true,
     batchType: true,
   },
   {
@@ -85,6 +86,7 @@ function formatType(value, isListItem) {
     case "Numeric Id":
     case "BigDecimal":
     case "Decimal":
+    case "Integer":
       return "number";
     case "Boolean":
       return "boolean";
@@ -125,6 +127,7 @@ function formatTypeWithRef(value) {
   return `(${types.join(" | ")})`;
 }
 
+// this is to fix inconsistencies in documentation
 function stantardizeTypeName(name) {
   switch (name) {
     case "ModificationMetaData":
@@ -137,8 +140,17 @@ function stantardizeTypeName(name) {
     case "CurrencyRefType":
     case "CurrencyRef":
       return "CurrencyRef";
+    case "WebSiteAddress":
+      return "WebsiteAddress";
     case "TelephoneNumber30":
       return "TelephoneNumber";
+    // ambiguous, just use string
+    case "CustomFieldTypeEnum":
+      return "string";
+    // LineDetail is not defined anywhere
+    case "LineDetail":
+    case "SubtotalLineDetail":
+      return "SubTotalLineDetail";
     default:
       return name;
   }
@@ -205,16 +217,16 @@ function generateCreateType(k, n) {
     const typescriptKey = key.replace(" [0..n]", "");
     omitFields.push(typescriptKey);
   }
-  let OmitString = `Omit<"${stantardizeTypeName(n)}",${omitFields
+  let OmitString = `Omit<${stantardizeTypeName(n)},${omitFields
     .map((field) => `"${field}"`)
-    .join(", ")}>`;
+    .join("| ")}>`;
   let stdOut = `export type Create${stantardizeTypeName(n)} = ${OmitString} `;
   typescriptTypesObj[createTypeName] = stdOut;
 }
 
 function generateUpdateType(k, n) {
-  const createTypeName = `Update${stantardizeTypeName(n)}`;
-  if (typescriptTypesObj[createTypeName]) {
+  const updateTypeName = `Update${stantardizeTypeName(n)}`;
+  if (typescriptTypesObj[updateTypeName]) {
     return;
   }
 
@@ -228,17 +240,32 @@ function generateUpdateType(k, n) {
     const typescriptKey = key.replace(" [0..n]", "");
     omitFields.push(typescriptKey);
   }
-  let OmitString = `Omit<"${stantardizeTypeName(n)}",${omitFields
-    .map((field) => `"${field}"`)
-    .join(", ")}>`;
-  let stdOut = `export type Update${stantardizeTypeName(
-    n
-  )} = ${OmitString} & {\n`;
+  let OmitString =
+    omitFields.length > 0
+      ? `Omit<${stantardizeTypeName(n)},${omitFields
+          .map((field) => `"${field}"`)
+          .join("| ")}> & `
+      : "";
+
+  let stdOut = `export type Update${stantardizeTypeName(n)} = ${OmitString}{\n`;
   stdOut += `    Id: string;\n`;
   stdOut += `    SyncToken: string;\n`;
   stdOut += `    sparse?: boolean;\n`;
   stdOut += `}`;
-  typescriptTypesObj[createTypeName] = stdOut;
+  typescriptTypesObj[updateTypeName] = stdOut;
+}
+
+function generateDeleteType(k, n) {
+  const deleteTypeName = `Delete${stantardizeTypeName(n)}`;
+  if (typescriptTypesObj[deleteTypeName]) {
+    return;
+  }
+
+  let stdOut = `export type Delete${stantardizeTypeName(n)} = {\n`;
+  stdOut += `    Id: string;\n`;
+  stdOut += `    SyncToken: string;\n`;
+  stdOut += `}`;
+  typescriptTypesObj[deleteTypeName] = stdOut;
 }
 
 function formatEnumType(enumObj) {
@@ -252,35 +279,43 @@ function formatEnumType(enumObj) {
   return stdOut;
 }
 
-function generateSingleBatchType(type) {
-  const typeClean = type.replace("Object", "");
-  return `
+function generateGetBatchType(type) {
+  const typeClean = type.name.replace("Object", "");
+  let stdOut = `
 // ${typeClean} batch types
 export interface Batch${typeClean}ItemRequest extends BatchItemRequestBase {
     ${typeClean}: ${typeClean}Object;
     operation: BatchOperation.QUERY;
 }
-
-export interface Batch${typeClean}CreateItemRequest extends BatchItemRequestBase {
+`;
+  if (type.createType) {
+    stdOut += `export interface Batch${typeClean}CreateItemRequest extends BatchItemRequestBase {
     ${typeClean}: Create${typeClean}Object;
     operation: BatchOperation.CREATE;
 }
-
-export interface Batch${typeClean}UpdateItemRequest extends BatchItemRequestBase {
+`;
+  }
+  if (type.updateType) {
+    stdOut += `export interface Batch${typeClean}UpdateItemRequest extends BatchItemRequestBase {
     ${typeClean}: Update${typeClean}Object;
     operation: BatchOperation.UPDATE;
-}
-export interface Batch${typeClean}DeleteItemRequest extends BatchItemRequestBase {
+}`;
+  }
+  if (type.deleteType) {
+    stdOut += `export interface Batch${typeClean}DeleteItemRequest extends BatchItemRequestBase {
     ${typeClean}: Delete${typeClean}Object;
     operation: BatchOperation.DELETE;
-}
-`;
+}`;
+  }
+  stdOut += `;`;
+
+  return stdOut;
 }
 
 function generateQueryTypes(batchTypes) {
   let stdOut = "";
   for (const type of batchTypes) {
-    const typeClean = type.replace("Object", "");
+    const typeClean = type.name.replace("Object", "");
     stdOut += `
 export type ${typeClean}Query = {
     QueryResponse: {
@@ -300,7 +335,7 @@ export type BatchItemResponse = {
     Fault?: Record<string, unknown>;
 `;
   for (const type of batchTypes) {
-    const typeClean = type.replace("Object", "");
+    const typeClean = type.name.replace("Object", "");
     stdOut += `    ${typeClean}?: ${typeClean}Object;\n`;
   }
   stdOut += `};`;
@@ -310,10 +345,20 @@ function generateBatchItemRequest(batchTypes) {
   const CRUD = ["", "Create", "Update", "Delete"];
   const outputBathTypes = [];
   for (const type of batchTypes) {
-    for (const crud of CRUD) {
-      const typeClean = type.replace("Object", ""); // TODO remove object word all together?
-      const typeName = `Batch${typeClean}${crud}ItemRequest`;
-      outputBathTypes.push(typeName);
+    const typeClean = type.name.replace("Object", ""); // TODO remove object word all together?
+    // get
+    outputBathTypes.push(`Batch${typeClean}ItemRequest`);
+    // create
+    if (type.createType) {
+      outputBathTypes.push(`Batch${typeClean}CreateItemRequest`);
+    }
+    // update
+    if (type.updateType) {
+      outputBathTypes.push(`Batch${typeClean}UpdateItemRequest`);
+    }
+    // delete
+    if (type.deleteType) {
+      outputBathTypes.push(`Batch${typeClean}DeleteItemRequest`);
     }
   }
 
@@ -344,6 +389,10 @@ async function main() {
     if (type.updateType) {
       generateUpdateType(type.key, type.name);
     }
+
+    if (type.deleteType) {
+      generateDeleteType(type.key, type.name);
+    }
   }
 
   // one off
@@ -361,11 +410,10 @@ async function main() {
   // batch types
   const batchTypes = types
     .filter((type) => type.batchType)
-    .map((type) => type.name)
-    .sort();
+    .sort((a, b) => (a.name < b.name ? -1 : 1));
 
   for (const baseType of batchTypes) {
-    content += generateSingleBatchType(baseType);
+    content += generateGetBatchType(baseType);
   }
 
   content += generateBatchItemRequest(batchTypes);

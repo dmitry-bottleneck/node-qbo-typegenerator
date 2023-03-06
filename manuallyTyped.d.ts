@@ -21,8 +21,7 @@
     fetchall?: boolean;
     desc?: boolean;
     asc?: boolean;
-    [key: string]: string;
-  };
+  } & Record<string, string>;
 
   export type DeliveryMethod = "Print" | "Email" | "None";
 
@@ -36,6 +35,8 @@
   export type EmailStatus = "NotSet" | "NeedToSend" | "EmailSent";
 
   export type DeliveryTypeEnum = "Email";
+  export type BillPaymentTypeEnum = "Check" | "CreditCard";
+  export type CCPaymentStatusEnum = "Completed" | "Unknown";
 
   // not used atm
   export type GSTRegistrationType =

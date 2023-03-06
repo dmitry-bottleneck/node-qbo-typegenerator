@@ -74,70 +74,55 @@ export type ContactInfo = {
   Type?: string;
 };
 export type CreateBillObject = Omit<
-  "BillObject",
-  "Id",
-  "Balance",
-  "HomeBalance",
-  "RecurDataRef",
-  "SyncToken",
-  "TotalAmt"
+  BillObject,
+  "Id" | "Balance" | "HomeBalance" | "RecurDataRef" | "SyncToken" | "TotalAmt"
 >;
 export type CreateBillPaymentObject = Omit<
-  "BillPaymentObject",
-  "Id",
-  "SyncToken"
+  BillPaymentObject,
+  "Id" | "SyncToken"
 >;
 export type CreateCustomerObject = Omit<
-  "CustomerObject",
-  "Id",
-  "CurrencyRef",
-  "FullyQualifiedName",
-  "IsProject",
-  "Level",
-  "SyncToken"
+  CustomerObject,
+  | "Id"
+  | "CurrencyRef"
+  | "FullyQualifiedName"
+  | "IsProject"
+  | "Level"
+  | "SyncToken"
 >;
 export type CreateEstimateObject = Omit<
-  "EstimateObject",
-  "Id",
-  "HomeTotalAmt",
-  "RecurDataRef",
-  "SyncToken",
-  "TaxExemptionRef",
-  "TotalAmt"
+  EstimateObject,
+  | "Id"
+  | "HomeTotalAmt"
+  | "RecurDataRef"
+  | "SyncToken"
+  | "TaxExemptionRef"
+  | "TotalAmt"
 >;
 export type CreateInvoiceObject = Omit<
-  "InvoiceObject",
-  "Id",
-  "Balance",
-  "DeliveryInfo",
-  "HomeBalance",
-  "HomeTotalAmt",
-  "InvoiceLink",
-  "RecurDataRef",
-  "SyncToken",
-  "TaxExemptionRef",
-  "TotalAmt"
+  InvoiceObject,
+  | "Id"
+  | "Balance"
+  | "DeliveryInfo"
+  | "HomeBalance"
+  | "HomeTotalAmt"
+  | "InvoiceLink"
+  | "RecurDataRef"
+  | "SyncToken"
+  | "TaxExemptionRef"
+  | "TotalAmt"
 >;
 export type CreatePaymentObject = Omit<
-  "PaymentObject",
-  "Id",
-  "SyncToken",
-  "TaxExemptionRef",
-  "UnappliedAmt"
+  PaymentObject,
+  "Id" | "SyncToken" | "TaxExemptionRef" | "UnappliedAmt"
 >;
 export type CreatePurchaseOrderObject = Omit<
-  "PurchaseOrderObject",
-  "Id",
-  "RecurDataRef",
-  "SyncToken",
-  "TotalAmt"
+  PurchaseOrderObject,
+  "Id" | "RecurDataRef" | "SyncToken" | "TotalAmt"
 >;
 export type CreateVendorObject = Omit<
-  "VendorObject",
-  "Id",
-  "Balance",
-  "CurrencyRef",
-  "SyncToken"
+  VendorObject,
+  "Id" | "Balance" | "CurrencyRef" | "SyncToken"
 >;
 export type CreditCardPayment = {
   CreditChargeInfo?: CreditChargeInfo;
@@ -146,8 +131,8 @@ export type CreditCardPayment = {
 export type CreditChargeInfo = {
   Amount?: number;
   BillAddrStreet?: string;
-  CcExpiryMonth?: Integer;
-  CcExpiryYear?: Integer;
+  CcExpiryMonth?: number;
+  CcExpiryYear?: number;
   NameOnAcct?: string;
   PostalCode?: string;
   ProcessPayment?: boolean;
@@ -166,7 +151,7 @@ export type CurrencyRef = {
 export type CustomField = {
   readonly DefinitionId: string;
   readonly Name?: string;
-  readonly Type?: CustomFieldTypeEnum;
+  readonly Type?: string;
   StringValue?: string;
 };
 export type CustomerObject = {
@@ -174,7 +159,7 @@ export type CustomerObject = {
   readonly CurrencyRef?: CurrencyRef;
   readonly FullyQualifiedName?: string;
   readonly IsProject?: boolean;
-  readonly Level?: Integer;
+  readonly Level?: number;
   readonly SyncToken: string;
   ARAccountRef?: ReferenceType;
   Active?: boolean;
@@ -215,7 +200,7 @@ export type CustomerObject = {
   TaxExemptionReasonId?: number;
   Taxable?: boolean;
   Title?: string;
-  WebAddr?: WebSiteAddress;
+  WebAddr?: WebsiteAddress;
 };
 export type CustomerTypeRef = {
   value: string;
@@ -225,6 +210,10 @@ export type Date = {
 };
 export type DateTime = {
   dateTime?: string;
+};
+export type DeleteInvoiceObject = {
+  Id: string;
+  SyncToken: string;
 };
 export type DeliveryInfo = {
   readonly DeliveryTime?: Date;
@@ -518,7 +507,7 @@ export type SubTotalLine = {
   Description?: string;
   DetailType: LineDetailTypeEnum.SubtotalLineDetail;
   LineNum?: number;
-  SubtotalLineDetail: LineDetail;
+  SubtotalLineDetail: SubTotalLineDetail;
 };
 export type SubTotalLineDetail = {
   ItemRef?: ReferenceType;
@@ -545,80 +534,68 @@ export type TxnTaxDetail = {
   TxnTaxCodeRef?: ReferenceType;
 };
 export type UpdateBillObject = Omit<
-  "BillObject",
-  "Balance",
-  "HomeBalance",
-  "RecurDataRef",
-  "TotalAmt"
+  BillObject,
+  "Balance" | "HomeBalance" | "RecurDataRef" | "TotalAmt"
 > & {
   Id: string;
   SyncToken: string;
   sparse?: boolean;
 };
-export type UpdateBillPaymentObject = Omit<"BillPaymentObject"> & {
+export type UpdateBillPaymentObject = {
   Id: string;
   SyncToken: string;
   sparse?: boolean;
 };
 export type UpdateCustomerObject = Omit<
-  "CustomerObject",
-  "CurrencyRef",
-  "FullyQualifiedName",
-  "IsProject",
-  "Level"
+  CustomerObject,
+  "CurrencyRef" | "FullyQualifiedName" | "IsProject" | "Level"
 > & {
   Id: string;
   SyncToken: string;
   sparse?: boolean;
 };
 export type UpdateEstimateObject = Omit<
-  "EstimateObject",
-  "HomeTotalAmt",
-  "RecurDataRef",
-  "TaxExemptionRef",
-  "TotalAmt"
+  EstimateObject,
+  "HomeTotalAmt" | "RecurDataRef" | "TaxExemptionRef" | "TotalAmt"
 > & {
   Id: string;
   SyncToken: string;
   sparse?: boolean;
 };
 export type UpdateInvoiceObject = Omit<
-  "InvoiceObject",
-  "Balance",
-  "DeliveryInfo",
-  "HomeBalance",
-  "HomeTotalAmt",
-  "InvoiceLink",
-  "RecurDataRef",
-  "TaxExemptionRef",
-  "TotalAmt"
+  InvoiceObject,
+  | "Balance"
+  | "DeliveryInfo"
+  | "HomeBalance"
+  | "HomeTotalAmt"
+  | "InvoiceLink"
+  | "RecurDataRef"
+  | "TaxExemptionRef"
+  | "TotalAmt"
 > & {
   Id: string;
   SyncToken: string;
   sparse?: boolean;
 };
 export type UpdatePaymentObject = Omit<
-  "PaymentObject",
-  "TaxExemptionRef",
-  "UnappliedAmt"
+  PaymentObject,
+  "TaxExemptionRef" | "UnappliedAmt"
 > & {
   Id: string;
   SyncToken: string;
   sparse?: boolean;
 };
 export type UpdatePurchaseOrderObject = Omit<
-  "PurchaseOrderObject",
-  "RecurDataRef",
-  "TotalAmt"
+  PurchaseOrderObject,
+  "RecurDataRef" | "TotalAmt"
 > & {
   Id: string;
   SyncToken: string;
   sparse?: boolean;
 };
 export type UpdateVendorObject = Omit<
-  "VendorObject",
-  "Balance",
-  "CurrencyRef"
+  VendorObject,
+  "Balance" | "CurrencyRef"
 > & {
   Id: string;
   SyncToken: string;
@@ -662,7 +639,7 @@ export type VendorObject = {
   Title?: string;
   Vendor1099?: boolean;
   VendorPaymentBankDetail?: VendorPaymentBankDetail;
-  WebAddr?: WebSiteAddress;
+  WebAddr?: WebsiteAddress;
 };
 export type VendorPaymentBankDetail = {
   BankAccountName?: string;
@@ -689,95 +666,64 @@ export interface BatchBillItemRequest extends BatchItemRequestBase {
   Bill: BillObject;
   operation: BatchOperation.QUERY;
 }
-
 export interface BatchBillCreateItemRequest extends BatchItemRequestBase {
   Bill: CreateBillObject;
   operation: BatchOperation.CREATE;
 }
-
 export interface BatchBillUpdateItemRequest extends BatchItemRequestBase {
   Bill: UpdateBillObject;
   operation: BatchOperation.UPDATE;
 }
-export interface BatchBillDeleteItemRequest extends BatchItemRequestBase {
-  Bill: DeleteBillObject;
-  operation: BatchOperation.DELETE;
-}
-
 // BillPayment batch types
 export interface BatchBillPaymentItemRequest extends BatchItemRequestBase {
   BillPayment: BillPaymentObject;
   operation: BatchOperation.QUERY;
 }
-
 export interface BatchBillPaymentCreateItemRequest
   extends BatchItemRequestBase {
   BillPayment: CreateBillPaymentObject;
   operation: BatchOperation.CREATE;
 }
-
 export interface BatchBillPaymentUpdateItemRequest
   extends BatchItemRequestBase {
   BillPayment: UpdateBillPaymentObject;
   operation: BatchOperation.UPDATE;
 }
-export interface BatchBillPaymentDeleteItemRequest
-  extends BatchItemRequestBase {
-  BillPayment: DeleteBillPaymentObject;
-  operation: BatchOperation.DELETE;
-}
-
 // Customer batch types
 export interface BatchCustomerItemRequest extends BatchItemRequestBase {
   Customer: CustomerObject;
   operation: BatchOperation.QUERY;
 }
-
 export interface BatchCustomerCreateItemRequest extends BatchItemRequestBase {
   Customer: CreateCustomerObject;
   operation: BatchOperation.CREATE;
 }
-
 export interface BatchCustomerUpdateItemRequest extends BatchItemRequestBase {
   Customer: UpdateCustomerObject;
   operation: BatchOperation.UPDATE;
 }
-export interface BatchCustomerDeleteItemRequest extends BatchItemRequestBase {
-  Customer: DeleteCustomerObject;
-  operation: BatchOperation.DELETE;
-}
-
 // Estimate batch types
 export interface BatchEstimateItemRequest extends BatchItemRequestBase {
   Estimate: EstimateObject;
   operation: BatchOperation.QUERY;
 }
-
 export interface BatchEstimateCreateItemRequest extends BatchItemRequestBase {
   Estimate: CreateEstimateObject;
   operation: BatchOperation.CREATE;
 }
-
 export interface BatchEstimateUpdateItemRequest extends BatchItemRequestBase {
   Estimate: UpdateEstimateObject;
   operation: BatchOperation.UPDATE;
 }
-export interface BatchEstimateDeleteItemRequest extends BatchItemRequestBase {
-  Estimate: DeleteEstimateObject;
-  operation: BatchOperation.DELETE;
-}
-
 // Invoice batch types
 export interface BatchInvoiceItemRequest extends BatchItemRequestBase {
   Invoice: InvoiceObject;
   operation: BatchOperation.QUERY;
 }
-
 export interface BatchInvoiceCreateItemRequest extends BatchItemRequestBase {
   Invoice: CreateInvoiceObject;
   operation: BatchOperation.CREATE;
 }
-
 export interface BatchInvoiceUpdateItemRequest extends BatchItemRequestBase {
   Invoice: UpdateInvoiceObject;
   operation: BatchOperation.UPDATE;
@@ -786,86 +732,60 @@ export interface BatchInvoiceDeleteItemRequest extends BatchItemRequestBase {
   Invoice: DeleteInvoiceObject;
   operation: BatchOperation.DELETE;
 }
-
 // Payment batch types
 export interface BatchPaymentItemRequest extends BatchItemRequestBase {
   Payment: PaymentObject;
   operation: BatchOperation.QUERY;
 }
-
 export interface BatchPaymentCreateItemRequest extends BatchItemRequestBase {
   Payment: CreatePaymentObject;
   operation: BatchOperation.CREATE;
 }
-
 export interface BatchPaymentUpdateItemRequest extends BatchItemRequestBase {
   Payment: UpdatePaymentObject;
   operation: BatchOperation.UPDATE;
 }
-export interface BatchPaymentDeleteItemRequest extends BatchItemRequestBase {
-  Payment: DeletePaymentObject;
-  operation: BatchOperation.DELETE;
-}
-
 // PurchaseOrder batch types
 export interface BatchPurchaseOrderItemRequest extends BatchItemRequestBase {
   PurchaseOrder: PurchaseOrderObject;
   operation: BatchOperation.QUERY;
 }
-
 export interface BatchPurchaseOrderCreateItemRequest
   extends BatchItemRequestBase {
   PurchaseOrder: CreatePurchaseOrderObject;
   operation: BatchOperation.CREATE;
 }
-
 export interface BatchPurchaseOrderUpdateItemRequest
   extends BatchItemRequestBase {
   PurchaseOrder: UpdatePurchaseOrderObject;
   operation: BatchOperation.UPDATE;
 }
-export interface BatchPurchaseOrderDeleteItemRequest
-  extends BatchItemRequestBase {
-  PurchaseOrder: DeletePurchaseOrderObject;
-  operation: BatchOperation.DELETE;
-}
-
 // Vendor batch types
 export interface BatchVendorItemRequest extends BatchItemRequestBase {
   Vendor: VendorObject;
   operation: BatchOperation.QUERY;
 }
-
 export interface BatchVendorCreateItemRequest extends BatchItemRequestBase {
   Vendor: CreateVendorObject;
   operation: BatchOperation.CREATE;
 }
-
 export interface BatchVendorUpdateItemRequest extends BatchItemRequestBase {
   Vendor: UpdateVendorObject;
   operation: BatchOperation.UPDATE;
-}
-export interface BatchVendorDeleteItemRequest extends BatchItemRequestBase {
-  Vendor: DeleteVendorObject;
-  operation: BatchOperation.DELETE;
 }
 export type BatchItemRequest =
   | BatchBillItemRequest
   | BatchBillCreateItemRequest
   | BatchBillUpdateItemRequest
-  | BatchBillDeleteItemRequest
   | BatchBillPaymentItemRequest
   | BatchBillPaymentCreateItemRequest
   | BatchBillPaymentUpdateItemRequest
-  | BatchBillPaymentDeleteItemRequest
   | BatchCustomerItemRequest
   | BatchCustomerCreateItemRequest
   | BatchCustomerUpdateItemRequest
-  | BatchCustomerDeleteItemRequest
   | BatchEstimateItemRequest
   | BatchEstimateCreateItemRequest
   | BatchEstimateUpdateItemRequest
-  | BatchEstimateDeleteItemRequest
   | BatchInvoiceItemRequest
   | BatchInvoiceCreateItemRequest
   | BatchInvoiceUpdateItemRequest
@@ -873,15 +793,12 @@ export type BatchItemRequest =
   | BatchPaymentItemRequest
   | BatchPaymentCreateItemRequest
   | BatchPaymentUpdateItemRequest
-  | BatchPaymentDeleteItemRequest
   | BatchPurchaseOrderItemRequest
   | BatchPurchaseOrderCreateItemRequest
   | BatchPurchaseOrderUpdateItemRequest
-  | BatchPurchaseOrderDeleteItemRequest
   | BatchVendorItemRequest
   | BatchVendorCreateItemRequest
-  | BatchVendorUpdateItemRequest
-  | BatchVendorDeleteItemRequest;
+  | BatchVendorUpdateItemRequest;
 
 export type BatchItemResponse = {
   bId: `bId${number}`;
@@ -975,8 +892,7 @@ export type QueryCriteriaObject = {
   fetchall?: boolean;
   desc?: boolean;
   asc?: boolean;
-  [key: string]: string;
-};
+} & Record<string, string>;
 
 export type DeliveryMethod = "Print" | "Email" | "None";
 
@@ -990,6 +906,8 @@ export type GlobalTaxCalculationEnum =
 export type EmailStatus = "NotSet" | "NeedToSend" | "EmailSent";
 
 export type DeliveryTypeEnum = "Email";
+export type BillPaymentTypeEnum = "Check" | "CreditCard";
+export type CCPaymentStatusEnum = "Completed" | "Unknown";
 
 // not used atm
 export type GSTRegistrationType =

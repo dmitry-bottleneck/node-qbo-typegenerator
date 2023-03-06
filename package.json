@@ -5,7 +5,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "generate": "node parseTypes.js && npm run prettier",
+    "generate": "node generateTypes.js && npm run prettier && npm run validate",
+    "validate": "tsc --noemit typescriptTypes.d.ts",
     "generate-via-puppeteer": "node puppeteer/index.js",
     "prettier": "./node_modules/.bin/prettier --write typescriptTypes.d.ts"
   },
