@@ -420,7 +420,7 @@ async function main() {
   }
 
   // one off
-  typescriptTypesDic["linedetailtypeenum"] = formatEnumType(LineDetailTypeEnum);
+  // typescriptTypesDic["linedetailtypeenum"] = formatEnumType(LineDetailTypeEnum);
 
   // produce output
   let content =

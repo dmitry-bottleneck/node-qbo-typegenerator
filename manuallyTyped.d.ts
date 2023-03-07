@@ -1,11 +1,4 @@
   // Manually typed definitions from typegeneration script
-  export enum BatchOperation {
-    CREATE = "create",
-    UPDATE = "update",
-    DELETE = "delete",
-    QUERY = "query",
-  }
-
   export interface BatchItemRequestBase {
     bId: `bId${number}`;
     operation: BatchOperation;
@@ -24,6 +17,13 @@
   } & Record<string, string>;
 
   // Enums:
+  export enum BatchOperation {
+    CREATE = "create",
+    UPDATE = "update",
+    DELETE = "delete",
+    QUERY = "query",
+  }
+  
   export enum BillableStatusEnum {
     NOT_BILLABLE = "NotBillable",
     BILLABLE = "Billable",
@@ -62,6 +62,17 @@
     TAX_INCLUSIVE = "TaxInclusive",
   }
   
+  export enum LineDetailTypeEnum {
+    AccountBasedExpenseLineDetail = "AccountBasedExpenseLineDetail",
+    DescriptionOnly = "DescriptionOnly",
+    DiscountLineDetail = "DiscountLineDetail",
+    GroupLineDetail = "GroupLineDetail",
+    ItemBasedExpenseLineDetail = "ItemBasedExpenseLineDetail",
+    SalesItemLineDetail = "SalesItemLineDetail",
+    SubtotalLineDetail = "SubtotalLineDetail",
+    TaxLineDetail = "TaxLineDetail",
+  }
+
   export enum PrintStatusEnum {
     NEED_TO_PRINT = "NeedToPrint",
     NOT_SET = "NotSet",

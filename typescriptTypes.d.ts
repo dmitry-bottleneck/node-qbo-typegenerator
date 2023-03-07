@@ -645,16 +645,6 @@ export type VendorPaymentBankDetail = {
 export type WebsiteAddress = {
   URI?: string;
 };
-export enum LineDetailTypeEnum {
-  AccountBasedExpenseLineDetail = "AccountBasedExpenseLineDetail",
-  DescriptionOnly = "DescriptionOnly",
-  DiscountLineDetail = "DiscountLineDetail",
-  GroupLineDetail = "GroupLineDetail",
-  ItemBasedExpenseLineDetail = "ItemBasedExpenseLineDetail",
-  SalesItemLineDetail = "SalesItemLineDetail",
-  SubtotalLineDetail = "SubtotalLineDetail",
-  TaxLineDetail = "TaxLineDetail",
-}
 
 // Bill batch types
 export interface BatchBillItemRequest extends BatchItemRequestBase {
@@ -865,13 +855,6 @@ export type VendorQuery = {
 };
 
 // Manually typed definitions from typegeneration script
-export enum BatchOperation {
-  CREATE = "create",
-  UPDATE = "update",
-  DELETE = "delete",
-  QUERY = "query",
-}
-
 export interface BatchItemRequestBase {
   bId: `bId${number}`;
   operation: BatchOperation;
@@ -890,6 +873,13 @@ export type QueryCriteriaObject = {
 } & Record<string, string>;
 
 // Enums:
+export enum BatchOperation {
+  CREATE = "create",
+  UPDATE = "update",
+  DELETE = "delete",
+  QUERY = "query",
+}
+
 export enum BillableStatusEnum {
   NOT_BILLABLE = "NotBillable",
   BILLABLE = "Billable",
@@ -926,6 +916,17 @@ export enum GlobalTaxCalculationEnum {
   NOT_APPLICABLE = "NotApplicable",
   TAX_EXCLUDED = "TaxExcluded",
   TAX_INCLUSIVE = "TaxInclusive",
+}
+
+export enum LineDetailTypeEnum {
+  AccountBasedExpenseLineDetail = "AccountBasedExpenseLineDetail",
+  DescriptionOnly = "DescriptionOnly",
+  DiscountLineDetail = "DiscountLineDetail",
+  GroupLineDetail = "GroupLineDetail",
+  ItemBasedExpenseLineDetail = "ItemBasedExpenseLineDetail",
+  SalesItemLineDetail = "SalesItemLineDetail",
+  SubtotalLineDetail = "SubtotalLineDetail",
+  TaxLineDetail = "TaxLineDetail",
 }
 
 export enum PrintStatusEnum {
