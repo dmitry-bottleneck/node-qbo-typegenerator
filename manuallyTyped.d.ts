@@ -23,39 +23,74 @@
     asc?: boolean;
   } & Record<string, string>;
 
-  export type DeliveryMethod = "Print" | "Email" | "None";
-
-  export type TaxReportingBasis = "Cash" | "Accrual";
-
-  export type GlobalTaxCalculationEnum =
-    | "TaxExcluded"
-    | "TaxInclusive"
-    | "NotApplicable";
-
-  export type EmailStatus = "NotSet" | "NeedToSend" | "EmailSent";
-
-  export type DeliveryTypeEnum = "Email";
-  export type BillPaymentTypeEnum = "Check" | "CreditCard";
-  export type CCPaymentStatusEnum = "Completed" | "Unknown";
-  // Transaction types
-  export type TxnTypeEnum = "Payment" | "PurchaseOrder" | "Invoice" | "Bill" | "BillPayment"; // TODO: add more types
-  // not used atm
-  export type GSTRegistrationType =
-    | "GST_REG_REG"
-    | "GST_REG_COMP"
-    | "GST_UNREG"
-    | "CONSUMER"
-    | "OVERSEAS"
-    | "SEZ"
-    | "DEEMED";
-
-  export type PrintStatusEnum = "NotSet" | "NeedToPrint" | "PrintComplete";
+  // Enums:
   export enum BillableStatusEnum {
     NOT_BILLABLE = "NotBillable",
     BILLABLE = "Billable",
     HAS_BEEN_BILLED = "HasBeenBilled",
   }
 
+  export enum BillPaymentTypeEnum {
+    CHECK = "Check",
+    CREDIT_CARD = "CreditCard",
+  }
+
+  export enum CCPaymentStatusEnum {
+    COMPLETED = "Completed",
+    UNKNOWN = "Unknown",
+  }
+  
+  // use in DeliveryInfo.DeliveryType
+  export enum DeliveryTypeEnum { 
+    EMAIL = "Email" 
+  }
+
+  // used in Customer.PreferredDeliveryMethod 
+  export enum DeliveryMethodEnum {
+    PRINT = "Print",
+    EMAIL = "Email",
+    NONE = "None",
+  }
+  export enum EmailStatusEnum { 
+    EMAIL_SENT = "EmailSent",
+    NEED_TO_SEND = "NeedToSend",
+    NOT_SET = "NotSet",
+  }
+  export enum GlobalTaxCalculationEnum {
+    NOT_APPLICABLE = "NotApplicable",
+    TAX_EXCLUDED = "TaxExcluded",
+    TAX_INCLUSIVE = "TaxInclusive",
+  }
+  
+  export enum PrintStatusEnum {
+    NEED_TO_PRINT = "NeedToPrint",
+    NOT_SET = "NotSet",
+    PRINT_COMPLETE = "PrintComplete",
+  }
+
+  export enum TaxReportingBasisEnum {
+    CASH = "Cash",
+    ACCURAL = "Accrual"
+  }
+  
+  // Transaction types
+  export enum TxnTypeEnum { // TODO: add more types
+    BILL = "Bill",
+    BILL_PAYMENT = "BillPayment", 
+    INVOICE = "Invoice",
+    PAYMENT = "Payment",
+    PURCHASE_ORDER = "PurchaseOrder",
+  }
+
+  export enum GSTRegistrationTypeEnum {
+    CONSUMER= "CONSUMER",
+    DEEMED = "DEEMED",
+    GST_REG_REG = "GST_REG_REG",
+    GST_REG_COMP = "GST_REG_COMP",
+    GST_UNREG = "GST_UNREG",
+    OVERSEAS = "OVERSEAS",
+    SEZ = "SEZ",
+  }
   export interface ErrorResponse {
     Fault: {
       Error: {
