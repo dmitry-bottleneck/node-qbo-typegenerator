@@ -37,7 +37,8 @@
   export type DeliveryTypeEnum = "Email";
   export type BillPaymentTypeEnum = "Check" | "CreditCard";
   export type CCPaymentStatusEnum = "Completed" | "Unknown";
-
+  // Transaction types
+  export type TxnTypeEnum = "Payment" | "PurchaseOrder" | "Invoice" | "Bill" | "BillPayment"; // TODO: add more types
   // not used atm
   export type GSTRegistrationType =
     | "GST_REG_REG"

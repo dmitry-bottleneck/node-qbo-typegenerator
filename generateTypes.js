@@ -12,7 +12,7 @@ const SYSTEM_DEFINED_FIELDS = [
   ],
 ];
 
-const types = [
+const MAIN_TYPES = [
   {
     name: "DescriptionLineDetail",
     key: "descriptiononly",
@@ -79,7 +79,12 @@ const types = [
 let typescriptTypesDic = {}; // types dictionary with key as type name and value as type definition string
 let typescriptTypesDicWith = ""; // typescript types string
 
-function formatType(value, isListItem) {
+function formatType(value, isListItem, key) {
+  // cleanup overrides:
+  if (key === "TxnType") {
+    return "TxnTypeEnum";
+  }
+
   if (isListItem) {
     return formatTypeWithRef(value);
   }
@@ -178,9 +183,12 @@ function defineType(k, n, f) {
 
   for (const [key, value] of entries) {
     const isReq =
-      value.requiredFlag === "Required" || key === "SyncToken" || key === "Id";
+      value.requiredFlag === "Required" ||
+      key === "SyncToken" ||
+      // Id is required for main types only to avoid CRUD definitions for Line items, address, etc types
+      (key === "Id" && MAIN_TYPES.some((t) => t.name === n));
     const isListItemPrefix = key.includes(" [0..n]") ? "[]" : "";
-    const typescriptType = formatType(value, isListItemPrefix);
+    const typescriptType = formatType(value, isListItemPrefix, key);
     const typescriptKey = key.replace(" [0..n]", "");
     const readonlyPrefix = value.readOnly ? "readonly " : "";
     stdOut += `    ${readonlyPrefix}${typescriptKey}${
@@ -377,7 +385,7 @@ function writeToDisk(content) {
 
 async function main() {
   // generate types disctionary
-  for (const type of types) {
+  for (const type of MAIN_TYPES) {
     if (typescriptTypesDic[type.key]) {
       continue;
     }
@@ -409,9 +417,9 @@ async function main() {
   }
 
   // batch types
-  const batchTypes = types
-    .filter((type) => type.batchType)
-    .sort((a, b) => (a.name < b.name ? -1 : 1));
+  const batchTypes = MAIN_TYPES.filter((type) => type.batchType).sort((a, b) =>
+    a.name < b.name ? -1 : 1
+  );
 
   for (const baseType of batchTypes) {
     content += generateGetBatchType(baseType);
@@ -434,8 +442,6 @@ async function main() {
     // write everything
     writeToDisk(content);
   });
-
-  console.log(typescriptTypesDic);
 }
 
 main();
