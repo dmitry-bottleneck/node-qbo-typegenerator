@@ -872,6 +872,19 @@ export type QueryCriteriaObject = {
   asc?: boolean;
 } & Record<string, string>;
 
+export interface ErrorResponse {
+  Fault: {
+    Error: {
+      Message: string;
+      Detail: string;
+      code: string;
+      element: string;
+    }[];
+    type: string;
+  };
+  time: Date;
+}
+
 // Enums:
 export enum BatchOperation {
   CREATE = "create",
@@ -958,16 +971,5 @@ export enum GSTRegistrationTypeEnum {
   OVERSEAS = "OVERSEAS",
   SEZ = "SEZ",
 }
-export interface ErrorResponse {
-  Fault: {
-    Error: {
-      Message: string;
-      Detail: string;
-      code: string;
-      element: string;
-    }[];
-    type: string;
-  };
-  time: Date;
-}
+
 // End of script generated types

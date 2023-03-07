@@ -16,6 +16,19 @@
     asc?: boolean;
   } & Record<string, string>;
 
+  export interface ErrorResponse {
+    Fault: {
+      Error: {
+        Message: string;
+        Detail: string;
+        code: string;
+        element: string;
+      }[];
+      type: string;
+    };
+    time: Date;
+  }
+
   // Enums:
   export enum BatchOperation {
     CREATE = "create",
@@ -23,7 +36,7 @@
     DELETE = "delete",
     QUERY = "query",
   }
-  
+
   export enum BillableStatusEnum {
     NOT_BILLABLE = "NotBillable",
     BILLABLE = "Billable",
@@ -101,16 +114,4 @@
     GST_UNREG = "GST_UNREG",
     OVERSEAS = "OVERSEAS",
     SEZ = "SEZ",
-  }
-  export interface ErrorResponse {
-    Fault: {
-      Error: {
-        Message: string;
-        Detail: string;
-        code: string;
-        element: string;
-      }[];
-      type: string;
-    };
-    time: Date;
   }
