@@ -18,6 +18,27 @@ export type AccountBasedExpenseLineDetail = {
   TaxCodeRef?: ReferenceType;
   TaxInclusiveAmt?: number;
 };
+export type AccountObject = {
+  readonly Id: string;
+  readonly Classification?: string;
+  readonly CurrentBalance?: number;
+  readonly CurrentBalanceWithSubAccounts?: number;
+  readonly FullyQualifiedName?: string;
+  readonly SubAccount?: boolean;
+  readonly SyncToken: string;
+  AccountAlias?: string;
+  AccountSubType?: string;
+  AccountType?: string;
+  AcctNum?: string;
+  Active?: boolean;
+  CurrencyRef?: CurrencyRef;
+  Description?: string;
+  MetaData?: ModificationMetaData;
+  Name: string;
+  ParentRef?: ReferenceType;
+  TaxCodeRef?: ReferenceType;
+  TxnLocationType?: string;
+};
 export type BillObject = {
   readonly Id: string;
   readonly Balance?: number;
@@ -74,6 +95,16 @@ export type ContactInfo = {
   Telephone?: TelephoneNumber;
   Type?: string;
 };
+export type CreateAccountObject = Omit<
+  AccountObject,
+  | "Id"
+  | "Classification"
+  | "CurrentBalance"
+  | "CurrentBalanceWithSubAccounts"
+  | "FullyQualifiedName"
+  | "SubAccount"
+  | "SyncToken"
+>;
 export type CreateBillObject = Omit<
   BillObject,
   "Id" | "Balance" | "HomeBalance" | "RecurDataRef" | "SyncToken" | "TotalAmt"
@@ -528,6 +559,18 @@ export type TxnTaxDetail = {
   TotalTax?: number;
   TxnTaxCodeRef?: ReferenceType;
 };
+export type UpdateAccountObject = Omit<
+  AccountObject,
+  | "Classification"
+  | "CurrentBalance"
+  | "CurrentBalanceWithSubAccounts"
+  | "FullyQualifiedName"
+  | "SubAccount"
+> & {
+  Id: string;
+  SyncToken: string;
+  sparse?: boolean;
+};
 export type UpdateBillObject = Omit<
   BillObject,
   "Balance" | "HomeBalance" | "RecurDataRef" | "TotalAmt"
@@ -646,6 +689,19 @@ export type WebsiteAddress = {
   URI?: string;
 };
 
+// Account batch types
+export interface BatchAccountItemRequest extends BatchItemRequestBase {
+  Account: AccountObject;
+  operation: BatchOperation.QUERY;
+}
+export interface BatchAccountCreateItemRequest extends BatchItemRequestBase {
+  Account: CreateAccountObject;
+  operation: BatchOperation.CREATE;
+}
+export interface BatchAccountUpdateItemRequest extends BatchItemRequestBase {
+  Account: UpdateAccountObject;
+  operation: BatchOperation.UPDATE;
+}
 // Bill batch types
 export interface BatchBillItemRequest extends BatchItemRequestBase {
   Bill: BillObject;
@@ -759,6 +815,9 @@ export interface BatchVendorUpdateItemRequest extends BatchItemRequestBase {
   operation: BatchOperation.UPDATE;
 }
 export type BatchItemRequest =
+  | BatchAccountItemRequest
+  | BatchAccountCreateItemRequest
+  | BatchAccountUpdateItemRequest
   | BatchBillItemRequest
   | BatchBillCreateItemRequest
   | BatchBillUpdateItemRequest
@@ -788,6 +847,7 @@ export type BatchItemRequest =
 export type BatchItemResponse = {
   bId: `bId${number}`;
   Fault?: Record<string, unknown>;
+  Account?: AccountObject;
   Bill?: BillObject;
   BillPayment?: BillPaymentObject;
   Customer?: CustomerObject;
@@ -796,6 +856,13 @@ export type BatchItemResponse = {
   Payment?: PaymentObject;
   PurchaseOrder?: PurchaseOrderObject;
   Vendor?: VendorObject;
+};
+
+export type AccountQuery = {
+  QueryResponse: {
+    Account: AccountObject[];
+  };
+  time: Date;
 };
 
 export type BillQuery = {
