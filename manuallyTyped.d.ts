@@ -11,7 +11,7 @@
   export type QueryCriteriaObject = {
     limit?: number;
     offset?: number;
-    fetchall?: boolean;
+    fetchAll?: boolean;
     desc?: boolean;
     asc?: boolean;
   } & Record<string, string>;
