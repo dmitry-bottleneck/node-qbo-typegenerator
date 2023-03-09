@@ -30,6 +30,22 @@
   }
 
   // Enums:
+  export enum AccountTypeEnum {
+    AccountsPayable = "Accounts Payable",
+    AccountsReceivable = "Accounts Receivable",
+    Expense = "Expense",
+    OtherCurrentLiability = "Other Current Liability",
+    Income = "Income",
+    Bank = "Bank",
+    CostOfGoodsSold = "Cost of Goods Sold",
+    OtherExpense = "Other Expense",
+    OtherIncome = "Other Income",
+    OtherCurrentAsset = "Other Current Asset",
+    CreditCard = "Credit Card",
+    LongTermLiability = "Long Term Liability",
+    Equity = "Equity",
+    FixedAsset = "Fixed Asset"
+  }
   export enum BatchOperation {
     CREATE = "create",
     UPDATE = "update",

@@ -179,9 +179,6 @@ function stantardizeTypeName(name) {
     case "LineDetail":
     case "SubtotalLineDetail":
       return "SubTotalLineDetail";
-    // return string for now
-    case "AccountTypeEnum":
-      return "string";
     default:
       return name;
   }
