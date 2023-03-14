@@ -64,6 +64,7 @@ const MAIN_TYPES = [
     name: "BillObject",
     key: "billresponse",
     createType: true,
+    deleteType: true,
     updateType: true,
     batchType: true,
   },

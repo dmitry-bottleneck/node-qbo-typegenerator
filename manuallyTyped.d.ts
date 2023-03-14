@@ -14,7 +14,7 @@
     fetchAll?: boolean;
     desc?: boolean;
     asc?: boolean;
-  } & Record<string, string>;
+  } | Record<string, string>;
 
   export interface ErrorResponse {
     Fault: {
@@ -116,7 +116,8 @@
   // Transaction types
   export enum TxnTypeEnum { // TODO: add more types
     BILL = "Bill",
-    BILL_PAYMENT = "BillPayment", 
+    BILL_PAYMENT = "BillPayment",
+    BILL_PAYMENT_CHECK = "BillPaymentCheck",
     INVOICE = "Invoice",
     PAYMENT = "Payment",
     PURCHASE_ORDER = "PurchaseOrder",

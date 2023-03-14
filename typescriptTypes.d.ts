@@ -237,6 +237,10 @@ export type CustomerObject = {
 export type CustomerTypeRef = {
   value: string;
 };
+export type DeleteBillObject = {
+  Id: string;
+  SyncToken: string;
+};
 export type DeleteInvoiceObject = {
   Id: string;
   SyncToken: string;
@@ -715,6 +719,10 @@ export interface BatchBillUpdateItemRequest extends BatchItemRequestBase {
   Bill: UpdateBillObject;
   operation: BatchOperation.UPDATE;
 }
+export interface BatchBillDeleteItemRequest extends BatchItemRequestBase {
+  Bill: DeleteBillObject;
+  operation: BatchOperation.DELETE;
+}
 // BillPayment batch types
 export interface BatchBillPaymentItemRequest extends BatchItemRequestBase {
   BillPayment: BillPaymentObject;
@@ -821,6 +829,7 @@ export type BatchItemRequest =
   | BatchBillItemRequest
   | BatchBillCreateItemRequest
   | BatchBillUpdateItemRequest
+  | BatchBillDeleteItemRequest
   | BatchBillPaymentItemRequest
   | BatchBillPaymentCreateItemRequest
   | BatchBillPaymentUpdateItemRequest
@@ -931,13 +940,15 @@ export interface BatchItemResponseObj {
   BatchItemResponse: BatchItemResponse[];
 }
 
-export type QueryCriteriaObject = {
-  limit?: number;
-  offset?: number;
-  fetchAll?: boolean;
-  desc?: boolean;
-  asc?: boolean;
-} & Record<string, string>;
+export type QueryCriteriaObject =
+  | {
+      limit?: number;
+      offset?: number;
+      fetchAll?: boolean;
+      desc?: boolean;
+      asc?: boolean;
+    }
+  | Record<string, string>;
 
 export interface ErrorResponse {
   Fault: {
