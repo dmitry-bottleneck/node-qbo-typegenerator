@@ -144,6 +144,10 @@ export type CreateInvoiceObject = Omit<
   | "TaxExemptionRef"
   | "TotalAmt"
 >;
+export type CreateItemObject = Omit<
+  ItemObject,
+  "Id" | "FullyQualifiedName" | "Level" | "SyncToken"
+>;
 export type CreatePaymentObject = Omit<
   PaymentObject,
   "Id" | "SyncToken" | "TaxExemptionRef" | "UnappliedAmt"
@@ -418,6 +422,45 @@ export type ItemBasedExpenseLineDetail = {
   TaxInclusiveAmt?: number;
   UnitPrice?: number;
 };
+export type ItemObject = {
+  readonly Id: string;
+  readonly FullyQualifiedName?: string;
+  readonly Level?: number;
+  readonly SyncToken: string;
+  AbatementRate?: number;
+  Active?: boolean;
+  AssetAccountRef?: ReferenceType;
+  ClassRef?: ReferenceType;
+  Description?: string;
+  ExpenseAccountRef?: ReferenceType;
+  IncomeAccountRef?: ReferenceType;
+  InvStartDate?: Date;
+  ItemCategoryType: string;
+  MetaData?: ModificationMetaData;
+  Name: string;
+  ParentRef?: ReferenceType;
+  PrefVendorRef?: ReferenceType;
+  PurchaseCost?: number;
+  PurchaseDesc?: string;
+  PurchaseTaxCodeRef?: ReferenceType;
+  PurchaseTaxIncluded?: boolean;
+  QtyOnHand?: number;
+  ReorderPoint?: number;
+  ReverseChargeRate?: number;
+  SalesTaxCodeRef?: ReferenceType;
+  SalesTaxIncluded?: boolean;
+  ServiceType?: string;
+  Sku?: string;
+  Source?: string;
+  SubItem?: boolean;
+  TaxClassificationRef?: ReferenceType;
+  Taxable?: boolean;
+  TrackQtyOnHand?: boolean;
+  Type?: string;
+  UQCDisplayText?: string;
+  UQCId?: string;
+  UnitPrice?: number;
+};
 export type LineLinkedTxn = {
   Amount: number;
   LinkedTxn: LinkedTxn[];
@@ -619,6 +662,14 @@ export type UpdateInvoiceObject = Omit<
   SyncToken: string;
   sparse?: boolean;
 };
+export type UpdateItemObject = Omit<
+  ItemObject,
+  "FullyQualifiedName" | "Level"
+> & {
+  Id: string;
+  SyncToken: string;
+  sparse?: boolean;
+};
 export type UpdatePaymentObject = Omit<
   PaymentObject,
   "TaxExemptionRef" | "UnappliedAmt"
@@ -781,6 +832,19 @@ export interface BatchInvoiceDeleteItemRequest extends BatchItemRequestBase {
   Invoice: DeleteInvoiceObject;
   operation: BatchOperation.DELETE;
 }
+// Item batch types
+export interface BatchItemItemRequest extends BatchItemRequestBase {
+  Item: ItemObject;
+  operation: BatchOperation.QUERY;
+}
+export interface BatchItemCreateItemRequest extends BatchItemRequestBase {
+  Item: CreateItemObject;
+  operation: BatchOperation.CREATE;
+}
+export interface BatchItemUpdateItemRequest extends BatchItemRequestBase {
+  Item: UpdateItemObject;
+  operation: BatchOperation.UPDATE;
+}
 // Payment batch types
 export interface BatchPaymentItemRequest extends BatchItemRequestBase {
   Payment: PaymentObject;
@@ -843,6 +907,9 @@ export type BatchItemRequest =
   | BatchInvoiceCreateItemRequest
   | BatchInvoiceUpdateItemRequest
   | BatchInvoiceDeleteItemRequest
+  | BatchItemItemRequest
+  | BatchItemCreateItemRequest
+  | BatchItemUpdateItemRequest
   | BatchPaymentItemRequest
   | BatchPaymentCreateItemRequest
   | BatchPaymentUpdateItemRequest
@@ -862,6 +929,7 @@ export type BatchItemResponse = {
   Customer?: CustomerObject;
   Estimate?: EstimateObject;
   Invoice?: InvoiceObject;
+  Item?: ItemObject;
   Payment?: PaymentObject;
   PurchaseOrder?: PurchaseOrderObject;
   Vendor?: VendorObject;
@@ -905,6 +973,13 @@ export type EstimateQuery = {
 export type InvoiceQuery = {
   QueryResponse: {
     Invoice: InvoiceObject[];
+  };
+  time: Date;
+};
+
+export type ItemQuery = {
+  QueryResponse: {
+    Item: ItemObject[];
   };
   time: Date;
 };
@@ -1051,6 +1126,7 @@ export enum TaxReportingBasisEnum {
 export enum TxnTypeEnum { // TODO: add more types
   BILL = "Bill",
   BILL_PAYMENT = "BillPayment",
+  BILL_PAYMENT_CHECK = "BillPaymentCheck",
   INVOICE = "Invoice",
   PAYMENT = "Payment",
   PURCHASE_ORDER = "PurchaseOrder",

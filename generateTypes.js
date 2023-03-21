@@ -82,6 +82,13 @@ const MAIN_TYPES = [
     updateType: true,
     batchType: true,
   },
+  {
+    name: "ItemObject",
+    key: "itemresponse",
+    createType: true,
+    updateType: true,
+    batchType: true,
+  },
 ];
 
 let typescriptTypesDic = {}; // types dictionary with key as type name and value as type definition string
@@ -174,6 +181,7 @@ function stantardizeTypeName(name) {
     case "TelephoneNumber30":
       return "TelephoneNumber";
     // ambiguous, just use string
+    case "IdType":
     case "CustomFieldTypeEnum":
       return "string";
     // LineDetail is not defined anywhere
