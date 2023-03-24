@@ -89,6 +89,13 @@ const MAIN_TYPES = [
     updateType: true,
     batchType: true,
   },
+  {
+    name: "JournalEntryObject",
+    key: "journalentryresponse",
+    createType: true,
+    updateType: true,
+    batchType: true,
+  },
 ];
 
 let typescriptTypesDic = {}; // types dictionary with key as type name and value as type definition string
@@ -115,15 +122,24 @@ function formatType(value, isListItem, key) {
     return "EmailStatusEnum";
   }
 
+  let type = value.type;
+
+  // if no value.type, and there is $ref, use first type from there
+  if (!type && value["$ref"]) {
+    type = Object.values(value["$ref"][0])[0];
+  }
+
   if (isListItem) {
     return formatTypeWithRef(value);
   }
-  switch (value.type) {
+  switch (type) {
     case "Numeric Id":
     case "BigDecimal":
     case "Decimal":
     case "Integer":
       return "number";
+    case "entity":
+      return "Entity";
     case "Boolean":
       return "boolean";
     case "date":
@@ -141,10 +157,12 @@ function formatType(value, isListItem, key) {
         .replace("</span> for this type of line.", "");
       LineDetailTypeEnum[key] = key;
       return `LineDetailTypeEnum.${key}`;
+    case "AccountSubType":
+      return "AccountSubTypeEnum";
     case "String":
       return "string";
     default:
-      return value.type;
+      return type;
   }
 }
 
@@ -188,6 +206,8 @@ function stantardizeTypeName(name) {
     case "LineDetail":
     case "SubtotalLineDetail":
       return "SubTotalLineDetail";
+    case "entity":
+      return "Entity";
     default:
       return name;
   }

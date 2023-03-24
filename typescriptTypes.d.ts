@@ -148,6 +148,10 @@ export type CreateItemObject = Omit<
   ItemObject,
   "Id" | "FullyQualifiedName" | "Level" | "SyncToken"
 >;
+export type CreateJournalEntryObject = Omit<
+  JournalEntryObject,
+  "Id" | "HomeTotalAmt" | "RecurDataRef" | "SyncToken" | "TotalAmt"
+>;
 export type CreatePaymentObject = Omit<
   PaymentObject,
   "Id" | "SyncToken" | "TaxExemptionRef" | "UnappliedAmt"
@@ -286,6 +290,10 @@ export type DiscountLineDetail = {
 };
 export type EmailAddress = {
   Address?: string;
+};
+export type Entity = {
+  EntityRef: ReferenceType;
+  Type?: EntityTypeEnum;
 };
 export type EstimateObject = {
   readonly Id: string;
@@ -460,6 +468,46 @@ export type ItemObject = {
   UQCDisplayText?: string;
   UQCId?: string;
   UnitPrice?: number;
+};
+export type JournalEntryLine = {
+  readonly Id?: string;
+  Amount: number;
+  Description?: string;
+  DetailType: LineDetailTypeEnum.JournalEntryLineDetail;
+  JournalEntryLineDetail: JournalEntryLineDetail;
+  LineNum?: number;
+};
+export type JournalEntryLineDetail = {
+  AccountRef: ReferenceType;
+  BillableStatus?: BillableStatusEnum;
+  ClassRef?: ReferenceType;
+  DepartmentRef?: ReferenceType;
+  Entity?: Entity;
+  JournalCodeRef: ReferenceType;
+  PostingType: PostingTypeEnum;
+  TaxAmount?: number;
+  TaxApplicableOn?: TaxApplicableOnEnum;
+  TaxCodeRef?: ReferenceType;
+  TaxInclusiveAmt?: number;
+};
+export type JournalEntryObject = {
+  readonly Id: string;
+  readonly HomeTotalAmt?: number;
+  readonly RecurDataRef?: ReferenceType;
+  readonly SyncToken: string;
+  readonly TotalAmt?: number;
+  Adjustment?: boolean;
+  CurrencyRef?: CurrencyRef;
+  DocNumber?: string;
+  ExchangeRate?: number;
+  GlobalTaxCalculation?: GlobalTaxCalculationEnum;
+  Line: (JournalEntryLine | DescriptionOnlyLine)[];
+  MetaData?: ModificationMetaData;
+  PrivateNote?: string;
+  TaxRateRef?: ReferenceType;
+  TransactionLocationType?: string;
+  TxnDate?: Date;
+  TxnTaxDetail?: TxnTaxDetail;
 };
 export type LineLinkedTxn = {
   Amount: number;
@@ -670,6 +718,14 @@ export type UpdateItemObject = Omit<
   SyncToken: string;
   sparse?: boolean;
 };
+export type UpdateJournalEntryObject = Omit<
+  JournalEntryObject,
+  "HomeTotalAmt" | "RecurDataRef" | "TotalAmt"
+> & {
+  Id: string;
+  SyncToken: string;
+  sparse?: boolean;
+};
 export type UpdatePaymentObject = Omit<
   PaymentObject,
   "TaxExemptionRef" | "UnappliedAmt"
@@ -845,6 +901,21 @@ export interface BatchItemUpdateItemRequest extends BatchItemRequestBase {
   Item: UpdateItemObject;
   operation: BatchOperation.UPDATE;
 }
+// JournalEntry batch types
+export interface BatchJournalEntryItemRequest extends BatchItemRequestBase {
+  JournalEntry: JournalEntryObject;
+  operation: BatchOperation.QUERY;
+}
+export interface BatchJournalEntryCreateItemRequest
+  extends BatchItemRequestBase {
+  JournalEntry: CreateJournalEntryObject;
+  operation: BatchOperation.CREATE;
+}
+export interface BatchJournalEntryUpdateItemRequest
+  extends BatchItemRequestBase {
+  JournalEntry: UpdateJournalEntryObject;
+  operation: BatchOperation.UPDATE;
+}
 // Payment batch types
 export interface BatchPaymentItemRequest extends BatchItemRequestBase {
   Payment: PaymentObject;
@@ -910,6 +981,9 @@ export type BatchItemRequest =
   | BatchItemItemRequest
   | BatchItemCreateItemRequest
   | BatchItemUpdateItemRequest
+  | BatchJournalEntryItemRequest
+  | BatchJournalEntryCreateItemRequest
+  | BatchJournalEntryUpdateItemRequest
   | BatchPaymentItemRequest
   | BatchPaymentCreateItemRequest
   | BatchPaymentUpdateItemRequest
@@ -930,6 +1004,7 @@ export type BatchItemResponse = {
   Estimate?: EstimateObject;
   Invoice?: InvoiceObject;
   Item?: ItemObject;
+  JournalEntry?: JournalEntryObject;
   Payment?: PaymentObject;
   PurchaseOrder?: PurchaseOrderObject;
   Vendor?: VendorObject;
@@ -980,6 +1055,13 @@ export type InvoiceQuery = {
 export type ItemQuery = {
   QueryResponse: {
     Item: ItemObject[];
+  };
+  time: Date;
+};
+
+export type JournalEntryQuery = {
+  QueryResponse: {
+    JournalEntry: JournalEntryObject[];
   };
   time: Date;
 };
@@ -1042,18 +1124,65 @@ export interface ErrorResponse {
 export enum AccountTypeEnum {
   AccountsPayable = "Accounts Payable",
   AccountsReceivable = "Accounts Receivable",
-  Expense = "Expense",
-  OtherCurrentLiability = "Other Current Liability",
-  Income = "Income",
   Bank = "Bank",
-  CostOfGoodsSold = "Cost of Goods Sold",
+  CostofGoodsSold = "Cost of Goods Sold",
+  CreditCard = "Credit Card",
+  Equity = "Equity",
+  Expense = "Expense",
+  FixedAsset = "Fixed Asset",
+  Income = "Income",
+  LongTermLiability = "Long Term Liability",
+  OtherCurrentAsset = "Other Current Asset",
+  OtherCurrentLiability = "Other Current Liability",
   OtherExpense = "Other Expense",
   OtherIncome = "Other Income",
-  OtherCurrentAsset = "Other Current Asset",
-  CreditCard = "Credit Card",
-  LongTermLiability = "Long Term Liability",
-  Equity = "Equity",
-  FixedAsset = "Fixed Asset",
+}
+export enum AccountSubTypeEnum {
+  AccountsPayable = "AccountsPayable",
+  AccountsReceivable = "AccountsReceivable",
+  AccumulatedDepreciation = "AccumulatedDepreciation",
+  AdvertisingPromotional = "AdvertisingPromotional",
+  Auto = "Auto",
+  BankCharges = "BankCharges",
+  Checking = "Checking",
+  CreditCard = "CreditCard",
+  Depreciation = "Depreciation",
+  DiscountsRefundsGiven = "DiscountsRefundsGiven",
+  DuesSubscriptions = "DuesSubscriptions",
+  EntertainmentMeals = "EntertainmentMeals",
+  EquipmentRental = "EquipmentRental",
+  GlobalTaxPayable = "GlobalTaxPayable",
+  Insurance = "Insurance",
+  InterestEarned = "InterestEarned",
+  Inventory = "Inventory",
+  LegalProfessionalFees = "LegalProfessionalFees",
+  OfficeGeneralAdministrativeExpenses = "OfficeGeneralAdministrativeExpenses",
+  OpeningBalanceEquity = "OpeningBalanceEquity",
+  OtherCurrentAssets = "OtherCurrentAssets",
+  OtherCurrentLiabilities = "OtherCurrentLiabilities",
+  OtherLongTermLiabilities = "OtherLongTermLiabilities",
+  OtherMiscellaneousExpense = "OtherMiscellaneousExpense",
+  OtherMiscellaneousIncome = "OtherMiscellaneousIncome",
+  OtherMiscellaneousServiceCost = "OtherMiscellaneousServiceCost",
+  OtherPrimaryIncome = "OtherPrimaryIncome",
+  PenaltiesSettlements = "PenaltiesSettlements",
+  PrepaidExpenses = "PrepaidExpenses",
+  RentOrLeaseOfBuildings = "RentOrLeaseOfBuildings",
+  RepairMaintenance = "RepairMaintenance",
+  RetainedEarnings = "RetainedEarnings",
+  SalesOfProductIncome = "SalesOfProductIncome",
+  Savings = "Savings",
+  ServiceFeeIncome = "ServiceFeeIncome",
+  SuppliesMaterials = "SuppliesMaterials",
+  SuppliesMaterialsCogs = "SuppliesMaterialsCogs",
+  TaxesPaid = "TaxesPaid",
+  Travel = "Travel",
+  TravelMeals = "TravelMeals",
+  UnappliedCashBillPaymentExpense = "UnappliedCashBillPaymentExpense",
+  UnappliedCashPaymentIncome = "UnappliedCashPaymentIncome",
+  UndepositedFunds = "UndepositedFunds",
+  Utilities = "Utilities",
+  Vehicles = "Vehicles",
 }
 export enum BatchOperation {
   CREATE = "create",
@@ -1105,6 +1234,7 @@ export enum LineDetailTypeEnum {
   DescriptionOnly = "DescriptionOnly",
   DiscountLineDetail = "DiscountLineDetail",
   GroupLineDetail = "GroupLineDetail",
+  JournalEntryLineDetail = "JournalEntryLineDetail",
   ItemBasedExpenseLineDetail = "ItemBasedExpenseLineDetail",
   SalesItemLineDetail = "SalesItemLineDetail",
   SubtotalLineDetail = "SubtotalLineDetail",
@@ -1142,4 +1272,17 @@ export enum GSTRegistrationTypeEnum {
   SEZ = "SEZ",
 }
 
+export enum EntityTypeEnum {
+  Customer = "Customer",
+  Employee = "Employee",
+  Vendor = "Vendor",
+}
+export enum TaxApplicableOnEnum {
+  Purchase = "Purchase",
+  Sales = "Sales",
+}
+export enum PostingTypeEnum {
+  Debit = "Debit",
+  Credit = "Credit",
+}
 // End of script generated types

@@ -33,19 +33,68 @@
   export enum AccountTypeEnum {
     AccountsPayable = "Accounts Payable",
     AccountsReceivable = "Accounts Receivable",
-    Expense = "Expense",
-    OtherCurrentLiability = "Other Current Liability",
-    Income = "Income",
     Bank = "Bank",
-    CostOfGoodsSold = "Cost of Goods Sold",
-    OtherExpense = "Other Expense",
-    OtherIncome = "Other Income",
-    OtherCurrentAsset = "Other Current Asset",
+    CostofGoodsSold = "Cost of Goods Sold",
     CreditCard = "Credit Card",
-    LongTermLiability = "Long Term Liability",
     Equity = "Equity",
-    FixedAsset = "Fixed Asset"
+    Expense = "Expense",
+    FixedAsset = "Fixed Asset",
+    Income = "Income",
+    LongTermLiability = "Long Term Liability",
+    OtherCurrentAsset = "Other Current Asset",
+    OtherCurrentLiability = "Other Current Liability",
+    OtherExpense = "Other Expense",
+    OtherIncome = "Other Income"
   }
+
+  export enum AccountSubTypeEnum {
+    AccountsPayable = "AccountsPayable",
+    AccountsReceivable = "AccountsReceivable",
+    AccumulatedDepreciation = "AccumulatedDepreciation",
+    AdvertisingPromotional = "AdvertisingPromotional",
+    Auto = "Auto",
+    BankCharges = "BankCharges",
+    Checking = "Checking",
+    CreditCard = "CreditCard",
+    Depreciation = "Depreciation",
+    DiscountsRefundsGiven = "DiscountsRefundsGiven",
+    DuesSubscriptions = "DuesSubscriptions",
+    EntertainmentMeals = "EntertainmentMeals",
+    EquipmentRental = "EquipmentRental",
+    GlobalTaxPayable = "GlobalTaxPayable",
+    Insurance = "Insurance",
+    InterestEarned = "InterestEarned",
+    Inventory = "Inventory",
+    LegalProfessionalFees = "LegalProfessionalFees",
+    OfficeGeneralAdministrativeExpenses = "OfficeGeneralAdministrativeExpenses",
+    OpeningBalanceEquity = "OpeningBalanceEquity",
+    OtherCurrentAssets = "OtherCurrentAssets",
+    OtherCurrentLiabilities = "OtherCurrentLiabilities",
+    OtherLongTermLiabilities = "OtherLongTermLiabilities",
+    OtherMiscellaneousExpense = "OtherMiscellaneousExpense",
+    OtherMiscellaneousIncome = "OtherMiscellaneousIncome",
+    OtherMiscellaneousServiceCost = "OtherMiscellaneousServiceCost",
+    OtherPrimaryIncome = "OtherPrimaryIncome",
+    PenaltiesSettlements = "PenaltiesSettlements",
+    PrepaidExpenses = "PrepaidExpenses",
+    RentOrLeaseOfBuildings = "RentOrLeaseOfBuildings",
+    RepairMaintenance = "RepairMaintenance",
+    RetainedEarnings = "RetainedEarnings",
+    SalesOfProductIncome = "SalesOfProductIncome",
+    Savings = "Savings",
+    ServiceFeeIncome = "ServiceFeeIncome",
+    SuppliesMaterials = "SuppliesMaterials",
+    SuppliesMaterialsCogs = "SuppliesMaterialsCogs",
+    TaxesPaid = "TaxesPaid",
+    Travel = "Travel",
+    TravelMeals = "TravelMeals",
+    UnappliedCashBillPaymentExpense = "UnappliedCashBillPaymentExpense",
+    UnappliedCashPaymentIncome = "UnappliedCashPaymentIncome",
+    UndepositedFunds = "UndepositedFunds",
+    Utilities = "Utilities",
+    Vehicles = "Vehicles"
+  }
+
   export enum BatchOperation {
     CREATE = "create",
     UPDATE = "update",
@@ -96,6 +145,7 @@
     DescriptionOnly = "DescriptionOnly",
     DiscountLineDetail = "DiscountLineDetail",
     GroupLineDetail = "GroupLineDetail",
+    JournalEntryLineDetail = "JournalEntryLineDetail",
     ItemBasedExpenseLineDetail = "ItemBasedExpenseLineDetail",
     SalesItemLineDetail = "SalesItemLineDetail",
     SubtotalLineDetail = "SubtotalLineDetail",
@@ -131,4 +181,18 @@
     GST_UNREG = "GST_UNREG",
     OVERSEAS = "OVERSEAS",
     SEZ = "SEZ",
+  }
+
+  export enum EntityTypeEnum {
+    Customer = "Customer",
+    Employee = "Employee",
+    Vendor = "Vendor",
+  }
+  export enum TaxApplicableOnEnum {
+    Purchase = "Purchase",
+    Sales = "Sales",
+  }
+  export enum PostingTypeEnum {
+    Debit = "Debit",
+    Credit = "Credit",
   }
