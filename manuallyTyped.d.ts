@@ -34,7 +34,7 @@
     AccountsPayable = "Accounts Payable",
     AccountsReceivable = "Accounts Receivable",
     Bank = "Bank",
-    CostofGoodsSold = "Cost of Goods Sold",
+    CostOfGoodsSold = "Cost of Goods Sold",
     CreditCard = "Credit Card",
     Equity = "Equity",
     Expense = "Expense",
@@ -46,7 +46,7 @@
     OtherExpense = "Other Expense",
     OtherIncome = "Other Income"
   }
-
+  
   export enum AccountSubTypeEnum {
     AccountsPayable = "AccountsPayable",
     AccountsReceivable = "AccountsReceivable",

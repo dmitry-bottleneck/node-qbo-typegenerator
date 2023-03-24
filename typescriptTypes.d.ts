@@ -1125,7 +1125,7 @@ export enum AccountTypeEnum {
   AccountsPayable = "Accounts Payable",
   AccountsReceivable = "Accounts Receivable",
   Bank = "Bank",
-  CostofGoodsSold = "Cost of Goods Sold",
+  CostOfGoodsSold = "Cost of Goods Sold",
   CreditCard = "Credit Card",
   Equity = "Equity",
   Expense = "Expense",
@@ -1137,6 +1137,7 @@ export enum AccountTypeEnum {
   OtherExpense = "Other Expense",
   OtherIncome = "Other Income",
 }
+
 export enum AccountSubTypeEnum {
   AccountsPayable = "AccountsPayable",
   AccountsReceivable = "AccountsReceivable",
@@ -1184,6 +1185,7 @@ export enum AccountSubTypeEnum {
   Utilities = "Utilities",
   Vehicles = "Vehicles",
 }
+
 export enum BatchOperation {
   CREATE = "create",
   UPDATE = "update",
