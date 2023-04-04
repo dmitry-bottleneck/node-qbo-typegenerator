@@ -96,6 +96,11 @@ const MAIN_TYPES = [
     updateType: true,
     batchType: true,
   },
+  {
+    name: "PreferencesObject",
+    key: "preferencesresponse",
+    updateType: true,
+  },
 ];
 
 let typescriptTypesDic = {}; // types dictionary with key as type name and value as type definition string
@@ -159,6 +164,8 @@ function formatType(value, isListItem, key) {
       return `LineDetailTypeEnum.${key}`;
     case "AccountSubType":
       return "AccountSubTypeEnum";
+    case "CustomFieldDefinition":
+      return "CustomField";
     case "String":
       return "string";
     default:

@@ -39,6 +39,18 @@ export type AccountObject = {
   TaxCodeRef?: ReferenceType;
   TxnLocationType?: string;
 };
+export type AccountingInfoPrefs = {
+  readonly BookCloseDate?: Date;
+  readonly FirstMonthOfFiscalYear?: MonthEnum;
+  readonly TaxForm?: string;
+  readonly TaxYearMonth?: string;
+  readonly UseAccountNumbers?: boolean;
+  ClassTrackingPerTxn?: boolean;
+  ClassTrackingPerTxnLine?: boolean;
+  CustomerTerminology?: string;
+  DepartmentTerminology?: string;
+  TrackDepartments?: boolean;
+};
 export type BillObject = {
   readonly Id: string;
   readonly Balance?: number;
@@ -184,6 +196,10 @@ export type CreditChargeResponse = {
   Status?: CCPaymentStatusEnum;
   TxnAuthorizationTime?: Date;
 };
+export type CurrencyPrefs = {
+  readonly HomeCurrency?: ReferenceType;
+  readonly MultiCurrencyEnabled?: boolean;
+};
 export type CurrencyRef = {
   name?: string;
   value: string;
@@ -290,6 +306,16 @@ export type DiscountLineDetail = {
 };
 export type EmailAddress = {
   Address?: string;
+};
+export type EmailMessageType = {
+  Message?: string;
+  Subject?: string;
+};
+export type EmailMessagesPrefs = {
+  EstimateMessage?: EmailMessageType;
+  InvoiceMessage?: EmailMessageType;
+  SalesReceiptMessage?: EmailMessageType;
+  StatementMessage?: EmailMessageType;
 };
 export type Entity = {
   EntityRef: ReferenceType;
@@ -565,6 +591,29 @@ export type PhysicalAddress = {
   Line5?: string;
   PostalCode?: string;
 };
+export type PreferencesObject = {
+  readonly Id: string;
+  readonly SyncToken: string;
+  AccountingInfoPrefs?: AccountingInfoPrefs;
+  CurrencyPrefs?: CurrencyPrefs;
+  EmailMessagesPrefs?: EmailMessagesPrefs;
+  MetaData?: ModificationMetaData;
+  OtherPrefs?: undefined;
+  ProductAndServicesPrefs?: ProductAndServicesPrefs;
+  ReportPrefs?: ReportPrefs;
+  SalesFormsPrefs?: SalesFormsPref;
+  TaxPrefs?: TaxPrefs;
+  TimeTrackingPrefs?: TimeTrackingPrefs;
+  VendorAndPurchasesPrefs?: VendorAndPurchasePrefs;
+};
+export type ProductAndServicesPrefs = {
+  ForPurchase?: boolean;
+  ForSales?: boolean;
+  QuantityOnHand?: boolean;
+  QuantityWithPriceAndRate?: boolean;
+  RecognitionFrequencyType?: string;
+  RevenueRecognitionEnabled?: boolean;
+};
 export type PurchaseOrderObject = {
   readonly Id: string;
   readonly RecurDataRef?: ReferenceType;
@@ -599,6 +648,34 @@ export type PurchaseOrderObject = {
 export type ReferenceType = {
   name?: string;
   value: string;
+};
+export type ReportPrefs = {
+  readonly CalcAgingReportFromTxnDate?: boolean;
+  ReportBasis?: ReportBasisEnum;
+};
+export type SalesFormsPref = {
+  readonly AutoApplyCredit?: boolean;
+  readonly CustomField?: CustomField;
+  readonly ETransactionEnabledStatus?: ETYransactionEnabledStatusEnum;
+  readonly EstimateMessage?: string;
+  readonly IPNSupportEnabled?: boolean;
+  readonly UsingPriceLevels?: boolean;
+  readonly UsingProgressInvoicing?: boolean;
+  AllowDeposit?: boolean;
+  AllowDiscount?: boolean;
+  AllowEstimates?: boolean;
+  AllowServiceDate?: boolean;
+  AllowShipping?: boolean;
+  CustomTxnNumbers?: boolean;
+  DefaultCustomerMessage?: string;
+  DefaultDiscountAccount?: boolean;
+  DefaultShippingAccount?: boolean;
+  DefaultTerms?: ReferenceType;
+  ETransactionAttachPDF?: boolean;
+  ETransactionPaymentEnabled?: boolean;
+  EmailCopyToCompany?: boolean;
+  SalesEmailBcc?: EmailAddress;
+  SalesEmailCc?: EmailAddress;
 };
 export type SalesItemLine = {
   readonly Id?: string;
@@ -646,8 +723,20 @@ export type TaxLineDetail = {
   TaxPercent?: number;
   TaxRateRef: ReferenceType;
 };
+export type TaxPrefs = {
+  readonly PartnerTaxEnabled?: boolean;
+  readonly TaxGroupCodeRef?: string;
+  readonly UsingSalesTax?: boolean;
+};
 export type TelephoneNumber = {
   FreeFormNumber?: string;
+};
+export type TimeTrackingPrefs = {
+  readonly MarkTimeEntriesBillable?: boolean;
+  readonly WorkWeekStartDate?: WeekEnum;
+  BillCustomers?: boolean;
+  ShowBillRateToAll?: boolean;
+  UsingSalesTax?: boolean;
 };
 export type TxnTaxDetail = {
   TaxLine?: TaxLine[];
@@ -734,6 +823,11 @@ export type UpdatePaymentObject = Omit<
   SyncToken: string;
   sparse?: boolean;
 };
+export type UpdatePreferencesObject = {
+  Id: string;
+  SyncToken: string;
+  sparse?: boolean;
+};
 export type UpdatePurchaseOrderObject = Omit<
   PurchaseOrderObject,
   "RecurDataRef" | "TotalAmt"
@@ -749,6 +843,15 @@ export type UpdateVendorObject = Omit<
   Id: string;
   SyncToken: string;
   sparse?: boolean;
+};
+export type VendorAndPurchasePrefs = {
+  readonly POCustomField?: CustomField;
+  readonly TPAREnabled?: boolean;
+  BillableExpenseTracking?: boolean;
+  DefaultMarkup?: number;
+  DefaultMarkupAccount?: ReferenceType;
+  DefaultTerms?: ReferenceType;
+  TrackingByCustomer?: boolean;
 };
 export type VendorObject = {
   readonly Id: string;
@@ -1286,5 +1389,40 @@ export enum TaxApplicableOnEnum {
 export enum PostingTypeEnum {
   Debit = "Debit",
   Credit = "Credit",
+}
+
+export enum ReportBasisEnum {
+  Accrual = "Accrual",
+  Cash = "Cash",
+}
+
+export enum MonthEnum {
+  January = "January",
+  February = "February",
+  March = "March",
+  April = "April",
+  May = "May",
+  June = "June",
+  July = "July",
+  August = "August",
+  September = "September",
+  October = "October",
+  November = "November",
+  December = "December",
+}
+
+export enum WeekEnum {
+  Monday = "Monday",
+  Tuesday = "Tuesday",
+  Wednesday = "Wednesday",
+  Thursday = "Thursday",
+  Friday = "Friday",
+  Saturday = "Saturday",
+  Sunday = "Sunday",
+}
+
+export enum ETYransactionEnabledStatusEnum {
+  Enabled = "Enabled",
+  Disabled = "Disabled",
 }
 // End of script generated types
